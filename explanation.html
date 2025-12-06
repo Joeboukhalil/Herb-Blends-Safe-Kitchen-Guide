@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Herb Encyclopedia — Detailed Guide</title>
+  <style>
+    :root{
+      --bg:#f7fff9;
+      --card:#ffffff;
+      --muted:#556270;
+      --accent:#176b5d;
+      --danger:#b33232;
+      --glass: rgba(255,255,255,0.75);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#f0fff7 0%, #f7fff9 100%);
+      color:#073032;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding-bottom:40px;
+    }
+    header{
+      padding:20px;
+      border-bottom:1px solid rgba(7,34,39,0.06);
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    header h1{margin:0;font-size:20px}
+    header p{margin:0;color:var(--muted);font-size:13px}
+    .container{max-width:1100px;margin:20px auto;padding:0 18px}
+    .intro{
+      display:flex;gap:18px;align-items:center;margin-bottom:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:12px;padding:18px;margin-bottom:16px;
+      box-shadow:0 8px 20px rgba(7,34,39,0.06);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:18px;
+    }
+    .herb-list{display:flex;flex-direction:column;gap:10px}
+    .herb-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+    .pill{
+      padding:8px 12px;border-radius:999px;border:1px solid rgba(7,34,39,0.06);
+      background:linear-gradient(180deg,#fff,#f9fffb);cursor:pointer;font-weight:700;font-size:13px;
+    }
+    .pill.active{background:linear-gradient(180deg,var(--accent),#2aa98a);color:white;border:0}
+    h2{margin:0 0 8px 0}
+    .tiny{font-size:13px;color:var(--muted)}
+    .section{
+      margin-top:8px;padding-top:8px;border-top:1px dashed rgba(7,34,39,0.06)
+    }
+    dl{margin:0}
+    dt{font-weight:700;margin-top:12px}
+    dd{margin:4px 0 0 0}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;border-bottom:1px dashed rgba(7,34,39,0.06);text-align:left}
+    .warn{
+      border-left:4px solid var(--danger);
+      padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(179,50,50,0.03), rgba(255,255,255,0.02));
+      color:var(--danger);font-weight:700;margin-top:12px;
+    }
+    .muted-note{font-size:13px;color:var(--muted);margin-top:8px}
+    .right-col .card{position:sticky;top:20px}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+    .btn{
+      display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;
+      border:1px solid rgba(7,34,39,0.06);background:white;color:var(--accent);cursor:pointer;
+    }
+    .btn-primary{
+      background:var(--accent);color:white;border:0;
+    }
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr; }
+      .right-col .card{position:relative;top:0}
+      .herb-nav{overflow:auto}
+    }
+    /* small accessible focus */
+    .pill:focus{outline:3px solid rgba(23,107,93,0.18);outline-offset:2px}
+    pre{background:#fafafa;padding:12px;border-radius:8px;overflow:auto}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Herb Encyclopedia — Kitchen-Safe Details</h1>
+      <p class="tiny">Detailed, general information about culinary herbs. Not medical advice.</p>
+    </div>
+    <div style="margin-left:auto;text-align:right">
+      <p class="tiny" style="margin:0;color:var(--muted)">Always consult a healthcare professional before using herbs medicinally.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro card">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <h2 style="margin:0">What this page is</h2>
+        <p class="tiny">Pages for each herb include: short description, common active components (kitchen-level), typical culinary uses, safe kitchen-style amounts for a single cup, blending tips, steeping guidance, and cautions. This guide is intended for educational and culinary use only.</p>
+        <div class="muted-note">Do NOT treat this as medical advice — herbs can interact with medications and may be unsafe for children, pregnant or breastfeeding people, or people with certain chronic conditions. Always check with a doctor or pharmacist first.</div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div>
+        <div class="card herb-list" id="contentArea">
+          <!-- Herb content injected by JS -->
+        </div>
+      </div>
+
+      <aside class="right-col">
+        <div class="card">
+          <h3 style="margin:0 0 6px 0">Quick table</h3>
+          <table>
+            <thead><tr><th>Herb</th><th>Primary culinary use</th></tr></thead>
+            <tbody>
+              <tr><td>Green Tea</td><td>Warm, caffeinated infusion for focus</td></tr>
+              <tr><td>Chamomile</td><td>Calming floral infusion</td></tr>
+              <tr><td>Peppermint</td><td>Digestive, refreshing tea</td></tr>
+              <tr><td>Lemon Balm</td><td>Gentle calming, uplifting</td></tr>
+              <tr><td>Lavender</td><td>Aromatic relaxation (small amounts)</td></tr>
+              <tr><td>Ginger</td><td>Warming, digestion comfort</td></tr>
+              <tr><td>Hibiscus</td><td>Tart, bright iced teas</td></tr>
+              <tr><td>Rosemary</td><td>Savory aroma, alertness by smell</td></tr>
+              <tr><td>Thyme</td><td>Savory, cough/traditional uses</td></tr>
+              <tr><td>Sage</td><td>Savory, throat comfort traditionally</td></tr>
+            </tbody>
+          </table>
+
+          <div class="section">
+            <h4 style="margin:0 0 8px 0">Steeping & amounts (single cup)</h4>
+            <ul class="tiny">
+              <li><strong>Dried herbs:</strong> usually 1–2 tsp per cup as a starting point.</li>
+              <li><strong>Fresh herbs:</strong> about 1 tbsp chopped fresh leaves per cup.</li>
+              <li><strong>Green tea:</strong> 1 tsp leaves (75–85°C recommended).</li>
+              <li><strong>Lavender & rosemary:</strong> use small amounts (pinch to ½ tsp) — strong flavor.</li>
+            </ul>
+            <div class="muted-note">Start milder if you're new to an herb. Taste and adjust.</div>
+          </div>
+
+          <div class="section">
+            <h4 style="margin:0 0 8px 0">Safety reminder</h4>
+            <div class="warn">Important: This content is educational. Herbs can interact with prescription medicines. Consult a healthcare professional before using herbs as treatment. If you are under 18, show this to a trusted adult.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div style="max-width:1100px;margin:14px auto;padding:0 18px">
+      <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap" id="navPills">
+        <!-- buttons injected by JS -->
+      </div>
+    </div>
+
+    <footer style="max-width:1100px;margin:28px auto;padding:0 18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="tiny">Made for learning • Not medical advice</div>
+        <div>
+          <!-- 'test' button linking to index.html -->
+          <a class="btn" href="index.html" id="testBtn">test</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      // Herb data (expanded entries)
+      const HERBS = [
+        {
+          id:'green-tea',
+          name:'Green Tea',
+          alt:'Camellia sinensis leaves (unoxidized)',
+          description: 'A gently caffeinated tea made from unoxidized Camellia sinensis leaves. Commonly consumed for mild energy and focus, and enjoyed hot or iced.',
+          components: ['Caffeine (mild)', 'L-theanine (supports calm focus)', 'Polyphenols (antioxidants)'],
+          culinaryUses: ['Daily warm/iced tea', 'Base for blended teas (mint, lemon)', 'Lightly flavored desserts or smoothies'],
+          kitchenAmount: 'Dried: 1 tsp per cup (250–300 ml). Steep 75–85°C, 2–3 minutes to avoid bitterness.',
+          blending: ['Chamomile for calm focus', 'Mint for fresh clarity', 'Lemon for bright flavor'],
+          cautions: ['Contains caffeine — avoid late at night or with stimulant medicines.', 'Not for large amounts in young children.'],
+          tips: ['Use lower water temperature to avoid bitterness.', 'Remove leaves quickly to prevent over-extraction.']
+        },
+        {
+          id:'chamomile',
+          name:'Chamomile',
+          alt:'Matricaria recutita / Chamaemelum nobile',
+          description: 'A floral herb from the daisy family used as a soothing tea and mild relaxant. Gentle taste and widely used before bedtime.',
+          components: ['Apigenin (calming)', 'Bisabolol (anti-inflammatory)', 'Flavonoids'],
+          culinaryUses: ['Bedtime tea', 'Blended relaxing infusions', 'Soothing compresses for skin'],
+          kitchenAmount: 'Dried: 1–2 tsp per cup. Steep with boiling water 5–7 minutes.',
+          blending: ['Lavender for deeper relaxation', 'Peppermint for digestive calm', 'Green tea in small amounts for balanced calm + focus'],
+          cautions: ['Allergies possible if sensitive to ragweed/aster family.', 'Avoid mixing with sedative meds without advice.'],
+          tips: ['Use whole flower heads when possible for better aroma.']
+        },
+        {
+          id:'peppermint',
+          name:'Peppermint',
+          alt:'Mentha × piperita',
+          description: 'A cooling, aromatic herb with a strong fresh flavor. Widely used for digestion-supportive teas and refreshing blends.',
+          components: ['Menthol (cooling sensation)', 'Essential oils'],
+          culinaryUses: ['Digestive tea', 'Iced teas and cold drinks', 'Flavoring for desserts and syrups'],
+          kitchenAmount: 'Dried: 1 tsp; Fresh: 1 tbsp leaves per cup. Steep boiling water 5–7 minutes.',
+          blending: ['Chamomile for calm digestion', 'Lemon balm for fresh calm', 'Hibiscus for bright iced blends'],
+          cautions: ['May relax lower esophageal sphincter (reflux sufferers might avoid).', 'Topical mint oil can be strong — avoid near eyes.'],
+          tips: ['Crush leaves slightly before steeping to release oils.']
+        },
+        {
+          id:'lemon-balm',
+          name:'Lemon Balm',
+          alt:'Melissa officinalis',
+          description: 'A lemon-scented herb in the mint family. Gentle, uplifting, and often used for stress-relief blends.',
+          components: ['Rosmarinic acid (calming)', 'Essential oils (mild)'],
+          culinaryUses: ['Relaxing tea', 'Adds bright lemony notes to blends', 'Cold infusions'],
+          kitchenAmount: 'Dried: 1 tsp; Fresh: 1 tbsp per cup. Steep boiling water 5–8 minutes.',
+          blending: ['Chamomile for soft calm', 'Mint for refreshing lift', 'Lavender for aroma-rich relaxation'],
+          cautions: ['Generally gentle — avoid large medicinal doses without medical advice.'],
+          tips: ['Pick fresh leaves before flowering for best flavor.']
+        },
+        {
+          id:'lavender',
+          name:'Lavender',
+          alt:'Lavandula angustifolia',
+          description: 'A strongly aromatic flower used for scent and relaxation. In teas it is used sparingly because of its strong floral taste.',
+          components: ['Linalool (aroma, calming)', 'Linalyl acetate'],
+          culinaryUses: ['Small amounts in teas and baked goods', 'Aromatherapy (essential oil)', 'Dessert flavoring when used carefully'],
+          kitchenAmount: 'Dried: ¼–½ tsp per cup (pinch). Steep 5–7 minutes with boiling water.',
+          blending: ['Chamomile for sleepy blends', 'Lemon balm for aromatic calm'],
+          cautions: ['Strong flavor — use very small amounts. Essential oil is NOT for swallowing.'],
+          tips: ['Use culinary-grade lavender and a small pinch to avoid soapy taste.']
+        },
+        {
+          id:'ginger',
+          name:'Ginger (fresh)',
+          alt:'Zingiber officinale',
+          description: 'A spicy, warming root used to soothe digestion and add warmth to beverages and food.',
+          components: ['Gingerols and shogaols (warming, digestion)', 'Aromatic compounds'],
+          culinaryUses: ['Hot infusions for stomach comfort', 'Cooking, stir-fries, sauces', 'Warm syrup for drinks'],
+          kitchenAmount: 'Fresh: 3–5 thin slices or ½ tsp grated per cup. Steep boiling water 5–8 minutes (longer for stronger flavor).',
+          blending: ['Lemon for bright warming tea', 'Mint for soothing stomach + freshness', 'Green tea for warm focus blends'],
+          cautions: ['High amounts may affect blood clotting — check with doctor if on blood thinners.', 'Can be strong for sensitive stomachs.'],
+          tips: ['Slice thin for gentle flavor; simmer for a longer infusion if you want stronger warmth.']
+        },
+        {
+          id:'hibiscus',
+          name:'Hibiscus (dried)',
+          alt:'Hibiscus sabdariffa',
+          description: 'Dried hibiscus petals make a tart, vibrantly colored tea often served iced. Bright and fruity in flavor.',
+          components: ['Vitamin C (culinary amounts)', 'Organic acids (tartness)'],
+          culinaryUses: ['Iced teas', 'Syrups and floral drinks', 'Refreshing summer blends'],
+          kitchenAmount: 'Dried: 1–2 tsp per cup. Steep boiling water 5–8 minutes; can be served iced with sweetener.',
+          blending: ['Mint for refreshing iced blends', 'Rosemary or lemon for savory-bright combinations'],
+          cautions: ['May lower blood pressure — if you have low BP or use BP meds, consult a provider.'],
+          tips: ['Sweeten lightly if too tart; great as concentrate for iced tea.']
+        },
+        {
+          id:'rosemary',
+          name:'Rosemary',
+          alt:'Salvia rosmarinus (Rosmarinus officinalis)',
+          description: 'A pine-like aromatic herb usually used in savory cooking; small amounts can be used in teas for a sharp, resinous note.',
+          components: ['Rosmarinic acid (aroma), essential oils'],
+          culinaryUses: ['Savory infusions', 'Aroma for alertness', 'Flavor in broths and marinades'],
+          kitchenAmount: 'Dried: ¼–½ tsp per cup; Fresh: ½–1 tsp chopped. Steep 5–7 minutes with boiling water.',
+          blending: ['Lemon peel for fresh-savoury blends', 'Hibiscus for interesting tart + resin contrast'],
+          cautions: ['Strong flavor — avoid high amounts in medicinal doses without advice.'],
+          tips: ['A sprig or small pinch goes a long way.']
+        },
+        {
+          id:'thyme',
+          name:'Thyme',
+          alt:'Thymus vulgaris',
+          description: 'A small-leaved herb with a warm, slightly minty aroma. Traditionally used in coughy or savory teas.',
+          components: ['Thymol (aromatic)', 'Essential oils'],
+          culinaryUses: ['Savory teas', 'Cough-tradition teas', 'Cooking & broths'],
+          kitchenAmount: 'Dried: ½–1 tsp; Fresh: 1 tsp leaves per cup. Steep boiling water 5–8 minutes.',
+          blending: ['Honey and lemon for throat comfort (culinary tradition)', 'Sage or rosemary for savory blends'],
+          cautions: ['Powerful aroma and flavor — use culinary amounts, avoid high medicinal dosing without advice.'],
+          tips: ['Crush leaves a bit before steeping to release aroma.']
+        },
+        {
+          id:'sage',
+          name:'Sage',
+          alt:'Salvia officinalis',
+          description: 'A strong-flavored, slightly peppery herb. Used in cooking and sometimes in traditional throat/compress recipes.',
+          components: ['Essential oils, rosmarinic acid'],
+          culinaryUses: ['Savory infusions', 'Traditional throat-soothing teas (culinary uses)', 'Cooking (pasta, meats)'],
+          kitchenAmount: 'Dried: ½ tsp; Fresh: 1 tsp leaves per cup. Steep boiling water 5–8 minutes.',
+          blending: ['Thyme and honey for savory throat-style infusions', 'Rosemary for robust savory notes'],
+          cautions: ['Avoid long-term high medicinal doses; culinary amounts are usually safe.'],
+          tips: ['Use sparingly in tea — strong, earthy flavor.']
+        }
+      ];
+
+      // Create nav pills
+      const nav = document.getElementById('navPills');
+      HERBS.forEach((h, idx) => {
+        const b = document.createElement('button');
+        b.className = 'pill';
+        b.textContent = h.name;
+        b.setAttribute('data-id', h.id);
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+          b.classList.add('active');
+          showHerb(h.id);
+          window.location.hash = h.id;
+        });
+        nav.appendChild(b);
+      });
+
+      // Build content area for all herbs (but hide others initially)
+      const contentArea = document.getElementById('contentArea');
+      HERBS.forEach(h => {
+        const sec = document.createElement('section');
+        sec.className = 'card';
+        sec.id = 'sec-' + h.id;
+        sec.innerHTML = `
+          <h2>${h.name}</h2>
+          <p class="tiny"><em>${h.alt}</em></p>
+          <p class="muted-note">${h.description}</p>
+
+          <div class="section">
+            <h3 style="margin:0 0 8px 0">Key components (kitchen-level)</h3>
+            <ul class="tiny">${h.components.map(c => `<li>${c}</li>`).join('')}</ul>
+          </div>
+
+          <div class="section">
+            <h3 style="margin:0 0 8px 0">Common culinary/traditional uses</h3>
+            <ul class="tiny">${h.culinaryUses.map(u => `<li>${u}</li>`).join('')}</ul>
+          </div>
+
+          <div class="section">
+            <h3 style="margin:0 0 8px 0">Kitchen-style amounts & steeping</h3>
+            <p class="tiny"><strong>Suggested amount (single cup):</strong> ${h.kitchenAmount}</p>
+            <p class="tiny"><strong>Steeping tip:</strong> ${h.tips.join(' ')}</p>
+          </div>
+
+          <div class="section">
+            <h3 style="margin:0 0 8px 0">Good combinations</h3>
+            <p class="tiny">${h.blending.join(' • ')}</p>
+          </div>
+
+          <div class="section">
+            <h3 style="margin:0 0 8px 0">Cautions & who should check with a doctor</h3>
+            <ul class="tiny">${h.cautions.map(c => `<li>${c}</li>`).join('')}</ul>
+            <p class="muted-note tiny">If you take prescription medication, are pregnant, breastfeeding, or have a chronic condition (heart disease, diabetes, blood clotting issues, thyroid problems, low or high blood pressure), show this information to a healthcare professional before using herbs medicinally.</p>
+          </div>
+        `;
+        contentArea.appendChild(sec);
+      });
+
+      // Show single herb section and scroll to it
+      function showHerb(id){
+        // hide all, then show selected
+        HERBS.forEach(h => {
+          const el = document.getElementById('sec-' + h.id);
+          if(el) el.style.display = (h.id === id) ? 'block' : 'none';
+        });
+        // scroll into view
+        const activeEl = document.getElementById('sec-' + id);
+        if(activeEl) activeEl.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+
+      // Initialize based on hash or show first
+      const initial = window.location.hash ? window.location.hash.replace('#','') : HERBS[0].id;
+      // mark active pill
+      const activePill = document.querySelector(`.pill[data-id="${initial}"]`);
+      if(activePill) activePill.classList.add('active');
+      // hide all then show initial
+      HERBS.forEach(h=> {
+        const el = document.getElementById('sec-' + h.id);
+        if(el) el.style.display = (h.id === initial) ? 'block' : 'none';
+      });
+
+      // allow keyboard navigation between pills
+      document.addEventListener('keydown', (e)=>{
+        const pills = Array.from(document.querySelectorAll('.pill'));
+        const idx = pills.findIndex(p => p.classList.contains('active'));
+        if(idx === -1) return;
+        if(e.key === 'ArrowRight'){
+          const next = (idx + 1) % pills.length;
+          pills[next].click();
+          pills[next].focus();
+        } else if(e.key === 'ArrowLeft'){
+          const prev = (idx - 1 + pills.length) % pills.length;
+          pills[prev].click();
+          pills[prev].focus();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

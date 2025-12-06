@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Herb Blends — Safe Kitchen Guide</title>
+  <style>
+    :root{
+      --bg:#f6fbf9;
+      --card:#ffffff;
+      --muted:#64748b;
+      --accent:#2b8a78;
+      --accent-2:#7bbf9e;
+      --danger:#c53030;
+      --glass: rgba(255,255,255,0.7);
+      font-family: Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#f0fff7 0%, #f6fbf9 100%);
+      color:#072227;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+    header{
+      padding:28px 20px;
+      display:flex;
+      gap:20px;
+      align-items:center;
+      border-bottom:1px solid rgba(7,34,39,0.06);
+      background:linear-gradient(90deg, rgba(43,138,120,0.06), rgba(123,191,158,0.03));
+    }
+    header h1{margin:0;font-size:20px;letter-spacing:0.2px}
+    header p{margin:0;color:var(--muted);font-size:13px}
+    .container{max-width:1100px;margin:24px auto;padding:0 18px 80px}
+    .grid{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:20px;
+    }
+
+    /* left sidebar */
+    .sidebar{
+      position:sticky;
+      top:22px;
+      align-self:start;
+      background:var(--card);
+      padding:18px;border-radius:12px;
+      box-shadow:0 6px 18px rgba(7,34,39,0.06);
+    }
+    .herb-list{display:flex;flex-direction:column;gap:10px;max-height:64vh;overflow:auto;padding-right:6px}
+    .herb{
+      display:flex;gap:12px;align-items:center;
+      padding:8px;border-radius:10px;
+      cursor:pointer;border:1px solid rgba(7,34,39,0.04);
+      transition:transform .12s, box-shadow .12s;
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.95));
+    }
+    .herb:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(7,34,39,0.04)}
+    .herb input{accent-color: var(--accent)}
+    .herb .name{font-weight:600}
+    .herb .small{font-size:12px;color:var(--muted)}
+    .badge{font-size:12px;padding:6px 8px;border-radius:999px;background:var(--accent-2);color:#04302b;margin-left:auto}
+
+    /* main */
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      padding:18px;border-radius:12px;
+      box-shadow:0 8px 24px rgba(7,34,39,0.06);
+    }
+    .grid-2{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    h2{margin:0 0 10px 0}
+    p.lead{margin:0;color:var(--muted)}
+    .blend-preview{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;
+    }
+    .chip{
+      padding:8px 12px;border-radius:999px;border:1px solid rgba(7,34,39,0.06);
+      background:linear-gradient(180deg,#fff,#f8fffb);font-weight:600;
+    }
+    .effect-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .effect-item{display:flex;gap:10px;align-items:flex-start}
+    .effect-item .dot{width:10px;height:10px;border-radius:2px;background:var(--accent);margin-top:6px}
+    .small-muted{font-size:13px;color:var(--muted)}
+    .recipe{
+      border-left:4px solid var(--accent);
+      padding:12px 14px;margin-top:10px;border-radius:8px;background:linear-gradient(180deg, rgba(43,138,120,0.03), rgba(255,255,255,0.02));
+    }
+    .warn{
+      border-left:4px solid var(--danger);
+      padding:12px 14px;margin-top:10px;border-radius:8px;background:linear-gradient(180deg, rgba(197,48,48,0.03), rgba(255,255,255,0.02));
+      color:var(--danger);
+      font-weight:600;
+    }
+    .muted-note{font-size:13px;color:var(--muted);margin-top:8px}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr; padding-bottom:20px}
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+      .grid-2{grid-template-columns:1fr}
+      .sidebar{position:relative;top:0}
+    }
+    /* little table */
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    td,th{padding:8px;border-bottom:1px dashed rgba(7,34,39,0.06);text-align:left}
+    th{font-weight:700;background:transparent;color:#0b3b36}
+    .tiny{font-size:13px;color:var(--muted)}
+    .footer-links{display:flex;gap:12px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+    a.btn{
+      padding:8px 12px;border-radius:8px;text-decoration:none;border:1px solid rgba(7,34,39,0.06);
+      background:white;color:var(--accent);font-weight:700;font-size:13px
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Herb Blends — Kitchen Guide</h1>
+      <p class="tiny">Helpful, general info about safe culinary herb blends and tea-style amounts.</p>
+    </div>
+    <div style="margin-left:auto;text-align:right">
+      <p class="tiny" style="margin:0;color:var(--muted)">Not medical advice • Ask a doctor before using herbs medically</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <aside class="sidebar card" aria-label="Herb selector">
+        <h3 style="margin:0 0 8px 0">Select herbs to build a blend</h3>
+        <p class="small-muted" style="margin:0 0 12px 0">Click up to 4 herbs. Hover an herb to read quick notes.</p>
+
+        <div class="herb-list" id="herbList">
+          <!-- herbs added by JS -->
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button id="clearBtn" class="btn" style="border-color:rgba(197,48,48,0.06);color:var(--danger)">Clear</button>
+          <a class="btn" id="printer" href="#" onclick="window.print();return false">Print</a>
+        </div>
+
+        <div style="margin-top:12px" class="tiny muted-note">
+          <strong>Quick steep guide</strong>
+          <table>
+            <tr><th>Type</th><th>Temp</th><th>Time</th></tr>
+            <tr><td class="tiny">Green tea</td><td>75–85°C</td><td>2–3 min</td></tr>
+            <tr><td class="tiny">Herbal infusions</td><td>95–100°C (boiling)</td><td>5–10 min</td></tr>
+            <tr><td class="tiny">Ginger (fresh)</td><td>95–100°C</td><td>5–8 min</td></tr>
+          </table>
+          <div style="margin-top:8px;color:var(--muted)">Amounts below are general kitchen guidance — avoid medical dosing.</div>
+        </div>
+      </aside>
+
+      <section class="main">
+        <article class="card">
+          <h2>About this guide</h2>
+          <p class="lead">This page explains popular culinary herbs, what they are commonly used for, and safe kitchen-style amounts to add to teas and infusions. It also shows how different herbs combine and what general effects you might expect (like <em>calming</em>, <em>freshness</em>, or <em>digestion support</em>).</p>
+
+          <div class="warn" role="alert">
+            ⚠️ <strong>Important safety note:</strong> This is educational content only. It is <strong>not medical advice.</strong> 
+            Do NOT use herbs to treat serious conditions without a healthcare professional. Herbs can interact with medicines, and some herbs are not suitable for children, pregnant or breastfeeding people, or people with certain chronic illnesses. Ask a doctor or pharmacist first.
+          </div>
+        </article>
+
+        <div class="grid-2">
+          <article class="card" id="blendCard">
+            <h2>Build a blend</h2>
+            <p class="tiny" id="selectedHelp">Selected herbs: <span id="selectedCount">0</span> / 4</p>
+
+            <div class="blend-preview" id="preview"></div>
+
+            <div class="effect-list" id="effectsArea">
+              <p class="small-muted">Pick herbs on the left to see combined effects and recommended amounts.</p>
+            </div>
+
+            <div style="margin-top:12px">
+              <h3 style="margin:0 0 8px 0">Suggested cup recipe (single cup)</h3>
+              <div id="recipeArea" class="recipe tiny">
+                <em>No herbs selected yet — choose 1–4 herbs.</em>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <h3 style="margin:0 0 8px 0">Notes & safety</h3>
+              <p class="tiny muted-note">Always check ingredient lists for allergies. If you feel unwell after trying a new herb, stop and talk to an adult or doctor.</p>
+            </div>
+          </article>
+
+          <aside class="card">
+            <h2>Herb quick facts</h2>
+            <div id="infoBox" class="tiny muted-note">
+              <p><strong>What "amount" means</strong>: this page uses kitchen-style amounts for a single 250–300 ml cup. Typical dried herb measures: <strong>1–2 tsp</strong> (mild to medium). Fresh herbs: <strong>1 tbsp</strong> chopped. Some strong-scent herbs (lavender, rosemary) are used in smaller amounts (pinch to 1/2 tsp).</p>
+
+              <p><strong>Who should be careful:</strong> children, pregnant/breastfeeding people, people on blood thinners, sedatives, thyroid medication, or those with chronic conditions — check with a provider.</p>
+            </div>
+
+            <h3 style="margin-top:12px">Sample recipes</h3>
+            <div class="recipe">
+              <strong>Green Tea + Chamomile (calm focus)</strong>
+              <div class="tiny">Green tea 1 tsp + Chamomile (dried) 1 tsp. Use 80°C water, steep 2–3 min.</div>
+            </div>
+
+            <div class="recipe">
+              <strong>Peppermint + Chamomile (digestion + calm)</strong>
+              <div class="tiny">Peppermint 1 tsp + Chamomile 1 tsp. Boiling water, steep 5–7 min.</div>
+            </div>
+
+            <div class="recipe">
+              <strong>Ginger + Lemon (warming, stomach comfort)</strong>
+              <div class="tiny">Fresh ginger 3–5 thin slices (or 1/2 tsp grated) + lemon slice. Boil 5–8 min.</div>
+            </div>
+
+            <div class="recipe">
+              <strong>Hibiscus + Mint (bright, refreshing)</strong>
+              <div class="tiny">Hibiscus (dried) 1–2 tsp + Mint 1 tsp. Boiling water, steep 5–8 min.</div>
+            </div>
+
+            <div class="tiny" style="margin-top:8px">Want more sample blends? Choose herbs above and the page will suggest effects and cup recipe automatically.</div>
+          </aside>
+        </div>
+
+        <article class="card" id="herbDetailsCard">
+          <h2>Herb encyclopedia (kitchen-safe)</h2>
+          <p class="tiny muted-note">Short entries for commonly used herbs. Effects listed are general culinary/traditional uses and not medical claims.</p>
+
+          <table aria-label="Herb table">
+            <thead>
+              <tr><th>Herb</th><th>Common uses</th><th>Kitchen amount (per cup)</th></tr>
+            </thead>
+            <tbody id="herbTable">
+              <!-- filled by JS -->
+            </tbody>
+          </table>
+        </article>
+
+        <footer>
+          <div class="footer-links">
+            <span class="tiny">Made for learning • Not medical advice</span>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Data: herbs with safe, general notes and kitchen-style amounts
+    const HERBS = [
+      {
+        id: 'green-tea',
+        name: 'Green Tea',
+        short: 'Mild caffeine, antioxidants, gentle focus',
+        uses: ['Gentle energy & focus', 'Antioxidants (culinary context)'],
+        amount: {dried: '1 tsp (green tea leaves)', fresh: '—'},
+        steep: '75–85°C, 2–3 min',
+        note: 'Contains caffeine. Avoid combining with stimulant medications. Not recommended for young children in large amounts.'
+      },
+      {
+        id: 'chamomile',
+        name: 'Chamomile',
+        short: 'Calming, soothing to stomach',
+        uses: ['Relaxation', 'Mild stomach soothing'],
+        amount: {dried: '1–2 tsp', fresh: '1 tbsp (if available)'},
+        steep: 'Boiling water, 5–7 min',
+        note: 'May cause allergic reaction in people allergic to plants in the daisy family.'
+      },
+      {
+        id: 'peppermint',
+        name: 'Peppermint',
+        short: 'Fresh, cooling; digestion support',
+        uses: ['Digestion support', 'Refreshing flavor'],
+        amount: {dried: '1 tsp', fresh: '1 tbsp leaves'},
+        steep: 'Boiling water, 5–7 min',
+        note: 'Can relax the lower esophageal sphincter — people with severe reflux may avoid it.'
+      },
+      {
+        id: 'lemon-balm',
+        name: 'Lemon Balm',
+        short: 'Gentle calming, uplifting',
+        uses: ['Stress relief', 'Mild mood support'],
+        amount: {dried: '1 tsp', fresh: '1 tbsp leaves'},
+        steep: 'Boiling water, 5–8 min',
+        note: 'Generally gentle; avoid large medicinal doses without advice.'
+      },
+      {
+        id: 'lavender',
+        name: 'Lavender',
+        short: 'Aromatic relaxation, used in small amounts',
+        uses: ['Aroma for relaxation', 'Sleepy blends (small amount)'],
+        amount: {dried: '¼–½ tsp (small pinch)', fresh: 'small pinch'},
+        steep: 'Boiling water, 5–7 min',
+        note: 'Very strong aroma — use sparingly. Some people dislike taste.'
+      },
+      {
+        id: 'ginger',
+        name: 'Ginger (fresh)',
+        short: 'Warm, digestion comfort, throat soothing',
+        uses: ['Digestion & warming', 'Sore throat comfort'],
+        amount: {dried: '½–1 tsp (powder)', fresh: '3–5 thin slices or ½ tsp grated'},
+        steep: 'Boiling water, 5–8 min',
+        note: 'Can thin blood slightly in large amounts; check with a doctor if on blood thinners.'
+      },
+      {
+        id: 'hibiscus',
+        name: 'Hibiscus (dried)',
+        short: 'Tart, vibrant color; cooling iced teas',
+        uses: ['Refreshing iced teas', 'High vitamin C in culinary context'],
+        amount: {dried: '1–2 tsp', fresh: '—'},
+        steep: 'Boiling water, 5–8 min',
+        note: 'May lower blood pressure; people with low BP or on BP meds should check first.'
+      },
+      {
+        id: 'rosemary',
+        name: 'Rosemary',
+        short: 'Pine-like, aromatic; savory blends',
+        uses: ['Alertness (aroma)', 'Savory herbal infusions'],
+        amount: {dried: '¼–½ tsp', fresh: '½–1 tsp chopped'},
+        steep: 'Boiling water, 5–7 min',
+        note: 'Strong flavor — use small amounts in tea.'
+      },
+      {
+        id: 'thyme',
+        name: 'Thyme',
+        short: 'Earthy, traditionally used for coughy teas',
+        uses: ['Savory infusions', 'Cough comfort in culinary tradition'],
+        amount: {dried: '½–1 tsp', fresh: '1 tsp leaves'},
+        steep: 'Boiling water, 5–8 min',
+        note: 'Powerful flavor and aroma; avoid large medicinal dosing without advice.'
+      },
+      {
+        id: 'sage',
+        name: 'Sage',
+        short: 'Warm, savory; sometimes used in throat teas',
+        uses: ['Savory infusions', 'Traditional throat comfort'],
+        amount: {dried: '½ tsp', fresh: '1 tsp leaves'},
+        steep: 'Boiling water, 5–8 min',
+        note: 'Avoid long-term large medicinal doses; culinary amounts are usually safe.'
+      }
+    ];
+
+    // Utility: map of common combined effects by keywords (simple rules)
+    const EFFECT_RULES = {
+      'calm': ['calm', 'relaxation', 'sleep', 'mild sedative'],
+      'fresh': ['fresh', 'refreshing', 'minty', 'bright'],
+      'digestion': ['digestion', 'stomach', 'nausea'],
+      'warm': ['warm', 'warming', 'ginger'],
+      'focus': ['focus', 'energy', 'alert'],
+      'aroma': ['aroma', 'alertness'],
+      'circulation': ['blood', 'pressure']
+    };
+
+    // Build herb list UI
+    const herbList = document.getElementById('herbList');
+    const preview = document.getElementById('preview');
+    const effectsArea = document.getElementById('effectsArea');
+    const recipeArea = document.getElementById('recipeArea');
+    const herbTable = document.getElementById('herbTable');
+    const selectedCount = document.getElementById('selectedCount');
+    let selected = [];
+
+    function createHerbItem(h){
+      const el = document.createElement('label');
+      el.className = 'herb';
+      el.title = h.note;
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.style.marginLeft = '4px';
+      checkbox.dataset.id = h.id;
+
+      const info = document.createElement('div');
+      info.style.display='flex';
+      info.style.flexDirection='column';
+
+      const name = document.createElement('div');
+      name.className='name';
+      name.textContent = h.name;
+
+      const short = document.createElement('div');
+      short.className='small';
+      short.textContent = h.short;
+
+      info.appendChild(name);
+      info.appendChild(short);
+
+      const badge = document.createElement('div');
+      badge.className='badge';
+      badge.textContent = 'Info';
+
+      el.appendChild(checkbox);
+      el.appendChild(info);
+      el.appendChild(badge);
+
+      checkbox.addEventListener('change', (e)=>{
+        if(e.target.checked){
+          if(selected.length >= 4){
+            e.target.checked = false;
+            alert('You can select up to 4 herbs at once for a blend.');
+            return;
+          }
+          selected.push(h.id);
+        } else {
+          selected = selected.filter(x => x !== h.id);
+        }
+        updatePreview();
+      });
+
+      el.addEventListener('mouseenter', () => {
+        badge.textContent = 'Tap for details';
+      });
+      el.addEventListener('mouseleave', () => {
+        badge.textContent = 'Info';
+      });
+
+      el.addEventListener('click', (ev) => {
+        // prevent double toggling when clicking checkbox
+        if(ev.target.tagName.toLowerCase() === 'input') return;
+        // toggle checkbox
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+      });
+
+      return el;
+    }
+
+    // Fill herb list & table
+    HERBS.forEach(h => {
+      herbList.appendChild(createHerbItem(h));
+
+      const tr = document.createElement('tr');
+      const td1 = document.createElement('td'); td1.textContent = h.name;
+      const td2 = document.createElement('td'); td2.textContent = h.uses.join('; ');
+      const td3 = document.createElement('td'); td3.innerHTML = '<strong>Dried:</strong> ' + h.amount.dried + '<br><strong>Fresh:</strong> ' + (h.amount.fresh || '—');
+      tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+      herbTable.appendChild(tr);
+    });
+
+    // Update preview + effects
+    function updatePreview(){
+      preview.innerHTML='';
+      effectsArea.innerHTML='';
+      recipeArea.innerHTML='';
+
+      selectedCount.textContent = selected.length;
+
+      if(selected.length === 0){
+        effectsArea.innerHTML = '<p class="small-muted">Pick herbs to see effects and a suggested single-cup recipe.</p>';
+        recipeArea.innerHTML = '<em>No herbs selected yet — choose 1–4 herbs.</em>';
+        return;
+      }
+
+      // show chips
+      selected.forEach(id => {
+        const herb = HERBS.find(h=>h.id===id);
+        const chip = document.createElement('div'); chip.className='chip';
+        chip.textContent = herb.name;
+        preview.appendChild(chip);
+      });
+
+      // Determine combined effects — simple rule-based aggregation:
+      const combined = {tags: new Set(), notes: []};
+      selected.forEach(id=>{
+        const h = HERBS.find(x=>x.id===id);
+        // check uses for keywords
+        h.uses.forEach(u=>{
+          const s = u.toLowerCase();
+          if(s.includes('calm') || s.includes('relax')) combined.tags.add('Calming / Relaxation');
+          if(s.includes('digestion') || s.includes('stomach') || s.includes('nausea')) combined.tags.add('Digestion support / Soothing');
+          if(s.includes('energy') || s.includes('focus') || s.includes('alert')) combined.tags.add('Mild focus / Alertness');
+          if(s.includes('refresh') || s.includes('mint') || s.includes('bright')) combined.tags.add('Refreshing / Cooling');
+          if(s.includes('warm')) combined.tags.add('Warming / Comfort');
+          if(h.id === 'hibiscus') combined.tags.add('Bright / Tart (may affect blood pressure)');
+          if(h.id === 'ginger') combined.tags.add('Warming (aids digestion)');
+          if(h.id === 'lavender') combined.tags.add('Aromatic relaxation (use sparingly)');
+        });
+        combined.notes.push(h.note);
+      });
+
+      // show tags
+      const tagList = document.createElement('div');
+      tagList.className='effect-list';
+      Array.from(combined.tags).forEach(t=>{
+        const item = document.createElement('div'); item.className='effect-item';
+        const dot = document.createElement('div'); dot.className='dot';
+        const txt = document.createElement('div');
+        txt.innerHTML = `<strong>${t}</strong><div class="tiny" style="color:var(--muted)">${explainTag(t)}</div>`;
+        item.appendChild(dot); item.appendChild(txt);
+        tagList.appendChild(item);
+      });
+      if(Array.from(combined.tags).length === 0){
+        effectsArea.innerHTML = '<p class="small-muted">No clear combined effect found — this blend may be mostly about flavor.</p>';
+      } else {
+        effectsArea.appendChild(tagList);
+      }
+
+      // Explain potential cautions aggregated:
+      const cautions = aggregateCautions(selected);
+      if(cautions.length){
+        const cautionBox = document.createElement('div');
+        cautionBox.className='warn';
+        cautionBox.innerHTML = '<strong>Possible cautions:</strong><ul style="margin:6px 0 0 18px;color:var(--danger)">'+cautions.map(c=>'<li>'+c+'</li>').join('')+'</ul>';
+        effectsArea.appendChild(cautionBox);
+      }
+
+      // Build suggested single-cup recipe
+      const rec = buildSingleCupRecipe(selected);
+      recipeArea.innerHTML = `<strong>Suggested single-cup infusion</strong>
+        <div class="tiny" style="margin-top:8px">
+          ${rec.instructions}
+          <table style="margin-top:8px">
+            <tr><th>Ingredient</th><th>Amount (per cup)</th></tr>
+            ${rec.ingredients.map(i=>`<tr><td>${i.name}</td><td>${i.amount}</td></tr>`).join('')}
+          </table>
+          <div style="margin-top:8px" class="tiny muted-note"><strong>Steep:</strong> ${rec.steep}. Taste and adjust — start milder if you're new to an herb.</div>
+        </div>`;
+
+    }
+
+    function explainTag(tag){
+      const map = {
+        'Calming / Relaxation':'May feel soothing or help with winding down. Avoid combining many sedative herbs if you take sleep or anti-anxiety meds.',
+        'Digestion support / Soothing':'Traditionally used to help with mild stomach upset and digestion after meals.',
+        'Mild focus / Alertness':'Includes mild caffeine (green tea) or aromatic herbs that feel alerting. Check stimulant interactions.',
+        'Refreshing / Cooling':'Minty and bright herbs that are refreshing hot or iced.',
+        'Warming / Comfort':'Ginger and similar herbs provide a warming sensation and are often used for comfort.',
+        'Bright / Tart (may affect blood pressure)':'Hibiscus can taste tart and may lower blood pressure in some people; check with a provider if you have low BP or take BP meds.',
+        'Aromatic relaxation (use sparingly)':'Strong-scented herbs like lavender are potent in small amounts.'
+      };
+      return map[tag] || '';
+    }
+
+    function aggregateCautions(ids){
+      const caut = new Set();
+      ids.forEach(id=>{
+        const h = HERBS.find(x=>x.id===id);
+        if(!h) return;
+        if(h.note.includes('blood')) caut.add('If you take blood thinners or have blood-pressure medication, check with a doctor (e.g., ginger, hibiscus).');
+        if(h.note.includes('caffeine')) caut.add('Contains caffeine (green tea): avoid high intake with stimulant medicines or late at night.');
+        if(h.note.includes('pregnant') || h.note.toLowerCase().includes('pregn')) caut.add('If pregnant or breastfeeding, ask a healthcare provider before use.');
+        if(h.note.includes('allergic') || h.note.toLowerCase().includes('allerg')) caut.add('Allergy caution: some herbs (e.g., chamomile) are related to common allergens (daisy family).');
+      });
+      // General safety reminder
+      caut.add('Always check for interactions with your medications and ask a healthcare professional first.');
+      return Array.from(caut);
+    }
+
+    function buildSingleCupRecipe(ids){
+      const ingredients = ids.map(id => {
+        const h = HERBS.find(x=>x.id===id);
+        // use the "dried" amount as primary suggestion if available
+        return {name: h.name, amount: h.amount.dried || h.amount.fresh};
+      });
+      // choose steep guidance: if any herb is green-tea use green tea temp; else boiling
+      const usesGreen = ids.some(id => id === 'green-tea');
+      const steep = usesGreen ? '75–85°C, 2–3 min (for green tea base). If using chamomile or heavier herbs with green tea, remove green tea early to avoid bitterness.' : 'Boiling water (95–100°C), 5–8 min (adjust based on taste).';
+
+      const instructions = 'Combine the listed ingredients in one cup (about 250–300 ml). Use the amounts below as a starting point, steep and taste. Start milder if you are new to a herb.';
+
+      return {ingredients, steep, instructions};
+    }
+
+    // clear button
+    document.getElementById('clearBtn').addEventListener('click', ()=>{
+      selected = [];
+      document.querySelectorAll('.herb input[type=checkbox]').forEach(cb=>cb.checked=false);
+      updatePreview();
+    });
+
+    // initial render
+    updatePreview();
+
+    // Accessibility: keyboard support for chips
+    preview.addEventListener('keydown', (e)=>{
+      if(e.key === 'Delete') document.getElementById('clearBtn').click();
+    });
+
+    // small cosmetic: make herb cards focusable
+    document.querySelectorAll('.herb').forEach(h => h.setAttribute('tabindex','0'));
+
+  </script>
+  
+  <!-- Explanation button -->
+<button id="explanationBtn" class="btn" 
+style="position:fixed;bottom:20px;right:20px;z-index:999;">
+  Explanation
+</button>
+
+<script>
+  document.getElementById("explanationBtn").onclick = function() {
+    window.location.href = "explanation.html";
+  };
+</script>
+
+</body>
+</html>
